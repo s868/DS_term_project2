@@ -203,3 +203,39 @@ int main()
     Stack order=calculateDist();
     if(2*dist[order.getTop().x][order.getTop().y]>B) printf("ERROR!!!\n");
     cout<<"at least "<<2*dist[order.getTop().x][order.getTop().y]<<endl;
+
+    ///start to clean floor
+    //Queue path;
+    int total=0;
+
+    Stack sub_path_go;
+    Queue sub_path_back;
+
+    while(!order.isEmpty()){
+        Pair cur;
+        if(!visited[order.getTop().x][order.getTop().y]){
+            cur=order.getTop();
+            sub_path_go=findPath_go(cur);
+            while(!sub_path_go.isEmpty()){
+                outFile<<sub_path_go.getTop().x<<" "<<sub_path_go.getTop().y<<endl;
+                sub_path_go.pop();
+                total++;
+                //if(total==INT_MAX) cout<<"BIG"<<endl;
+            }
+            sub_path_back=findPath_back(cur);
+            while(!sub_path_back.isEmpty()){
+                //最後一個是R 但在中間的時候不用印出R (會重複 因為go一開始就有R 若不排除 會印出兩個R
+                if(sub_path_back.getHead().x!=R_row||sub_path_back.getHead().y!=R_col){
+                    outFile<<sub_path_back.getHead().x<<" "<<sub_path_back.getHead().y<<endl;
+                    total++;
+                    //if(total==INT_MAX) cout<<"BIG"<<endl;
+                }
+                sub_path_back.pop();
+            }
+            order.pop();
+        }
+        else
+            order.pop();
+
+
+    }
