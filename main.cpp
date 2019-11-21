@@ -291,3 +291,161 @@ Stack calculateDist(){
 
     return s;
 }
+
+Stack findPath_go(Pair mid){
+    //go (hence stack pop出來的是按照順序)
+    Stack sub_path;
+    Pair cur;
+    cur=mid;
+    visited[cur.x][cur.y]=true;
+    sub_path.push(cur.x, cur.y);
+    while(1){
+        //cout<<cur.x<<" "<<cur.y<<endl;
+        if(cur.x==R_row && cur.y==R_col) break;
+
+        //go單純走一條就好，先不要判斷可不可以多走
+
+        //先看沒有走過的
+        if(cur.y+1<n && !visited[cur.x][cur.y+1] && dist[cur.x][cur.y+1]==dist[cur.x][cur.y]-1){
+            visited[cur.x][cur.y+1]=true;
+            sub_path.push(cur.x, cur.y+1);
+            cur.y=cur.y+1;
+            continue;
+        }
+        else if(cur.x+1<m && !visited[cur.x+1][cur.y] && dist[cur.x+1][cur.y]==dist[cur.x][cur.y]-1){
+            visited[cur.x+1][cur.y]=true;
+            sub_path.push(cur.x+1, cur.y);
+            cur.x=cur.x+1;
+            continue;
+        }
+        else if(cur.y-1>=0 && !visited[cur.x][cur.y-1] && dist[cur.x][cur.y-1]==dist[cur.x][cur.y]-1){
+            visited[cur.x][cur.y-1]=true;
+            sub_path.push(cur.x, cur.y-1);
+            cur.y=cur.y-1;
+            continue;
+        }
+        else if(cur.x-1>=0 && !visited[cur.x-1][cur.y] && dist[cur.x-1][cur.y]==dist[cur.x][cur.y]-1){
+            visited[cur.x-1][cur.y]=true;
+            sub_path.push(cur.x-1, cur.y);
+            cur.x=cur.x-1;
+            continue;
+        }
+
+        //再看已經清過的
+        if(cur.y+1<n && dist[cur.x][cur.y+1]==dist[cur.x][cur.y]-1){
+            sub_path.push(cur.x, cur.y+1);
+            cur.y=cur.y+1;
+            continue;
+        }
+        else if(cur.x+1<m && dist[cur.x+1][cur.y]==dist[cur.x][cur.y]-1){
+            sub_path.push(cur.x+1, cur.y);
+            cur.x=cur.x+1;
+            continue;
+        }
+        else if(cur.y-1>=0 && dist[cur.x][cur.y-1]==dist[cur.x][cur.y]-1){
+            sub_path.push(cur.x, cur.y-1);
+            cur.y=cur.y-1;
+            continue;
+        }
+        else if(cur.x-1>=0 && dist[cur.x-1][cur.y]==dist[cur.x][cur.y]-1){
+            sub_path.push(cur.x-1, cur.y);
+            cur.x=cur.x-1;
+            continue;
+        }
+    }
+    return sub_path;
+}
+
+Queue findPath_back(Pair mid){
+    //go (hence stack pop出來的是按照順序)
+    int will_use_step;
+    Queue sub_path;
+    Pair cur;
+    will_use_step=2*dist[mid.x][mid.y]; //at least
+    cur=mid;
+    while(1){
+        if(cur.x==R_row && cur.y==R_col) break;
+
+        //先判斷可不可以多走
+        if(will_use_step+2<=B){
+            if(cur.y+1<n && !visited[cur.x][cur.y+1] && dist[cur.x][cur.y+1]>=dist[cur.x][cur.y]){
+                will_use_step+=2;
+                visited[cur.x][cur.y+1]=true;
+                sub_path.push(cur.x, cur.y+1);
+                cur.y=cur.y+1;
+                continue;
+            }
+            else if(cur.x+1<m && !visited[cur.x+1][cur.y] && dist[cur.x+1][cur.y]>=dist[cur.x][cur.y]){
+                will_use_step+=2;
+                visited[cur.x+1][cur.y]=true;
+                sub_path.push(cur.x+1, cur.y);
+                cur.x=cur.x+1;
+                continue;
+            }
+            else if(cur.y-1>=0 && !visited[cur.x][cur.y-1] && dist[cur.x][cur.y-1]>=dist[cur.x][cur.y]){
+                will_use_step+=2;
+                visited[cur.x][cur.y-1]=true;
+                sub_path.push(cur.x, cur.y-1);
+                cur.y=cur.y-1;
+                continue;
+            }
+            else if(cur.x-1>=0 && !visited[cur.x-1][cur.y] && dist[cur.x-1][cur.y]>=dist[cur.x][cur.y]){
+                will_use_step+=2;
+                visited[cur.x-1][cur.y]=true;
+                sub_path.push(cur.x-1, cur.y);
+                cur.x=cur.x-1;
+                continue;
+            }
+        }
+
+        //if B不夠多去多走 or B夠多去走但附近dist較大的格子都已經被清過了
+        //先看沒有走過的
+        if(cur.y+1<n && !visited[cur.x][cur.y+1] && dist[cur.x][cur.y+1]==dist[cur.x][cur.y]-1){
+            visited[cur.x][cur.y+1]=true;
+            sub_path.push(cur.x, cur.y+1);
+            cur.y=cur.y+1;
+            continue;
+        }
+        else if(cur.x+1<m && !visited[cur.x+1][cur.y] && dist[cur.x+1][cur.y]==dist[cur.x][cur.y]-1){
+            visited[cur.x+1][cur.y]=true;
+            sub_path.push(cur.x+1, cur.y);
+            cur.x=cur.x+1;
+            continue;
+        }
+        else if(cur.y-1>=0 && !visited[cur.x][cur.y-1] && dist[cur.x][cur.y-1]==dist[cur.x][cur.y]-1){
+            visited[cur.x][cur.y-1]=true;
+            sub_path.push(cur.x, cur.y-1);
+            cur.y=cur.y-1;
+            continue;
+        }
+        else if(cur.x-1>=0 && !visited[cur.x-1][cur.y] && dist[cur.x-1][cur.y]==dist[cur.x][cur.y]-1){
+            visited[cur.x-1][cur.y]=true;
+            sub_path.push(cur.x-1, cur.y);
+            cur.x=cur.x-1;
+            continue;
+        }
+
+        //再看已經清過的
+        if(cur.y+1<n && dist[cur.x][cur.y+1]==dist[cur.x][cur.y]-1){
+            sub_path.push(cur.x, cur.y+1);
+            cur.y=cur.y+1;
+            continue;
+        }
+        else if(cur.x+1<m && dist[cur.x+1][cur.y]==dist[cur.x][cur.y]-1){
+            sub_path.push(cur.x+1, cur.y);
+            cur.x=cur.x+1;
+            continue;
+        }
+        else if(cur.y-1>=0 && dist[cur.x][cur.y-1]==dist[cur.x][cur.y]-1){
+            sub_path.push(cur.x, cur.y-1);
+            cur.y=cur.y-1;
+            continue;
+        }
+        else if(cur.x-1>=0 && dist[cur.x-1][cur.y]==dist[cur.x][cur.y]-1){
+            sub_path.push(cur.x-1, cur.y);
+            cur.x=cur.x-1;
+            continue;
+        }
+    }
+    return sub_path;
+}
