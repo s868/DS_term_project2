@@ -107,3 +107,63 @@ public:
     }
 
 };
+
+Stack calculateDist();
+Stack findPath_go(Pair mid);
+Queue findPath_back(Pair mid);
+
+int main()
+{
+    int i, j;
+    char x;
+    int _m, _n, _B;
+
+    ifstream inFile("floor.data",ios::in);
+    if(!inFile){
+        cout<<"cannot open floor.data"<<endl;
+        return 1;
+    }
+
+    ///讀m n B
+    inFile>>noskipws; //讀取空格
+    while(1){
+        inFile>>x;
+        if(x==' ') break;
+        _m=x-'0';
+        m=m*10+_m;
+    }
+
+    while(1){
+        inFile>>x;
+        if(x==' ') break;
+        _n=x-'0';
+        n=n*10+_n;
+    }
+
+    while(1){
+        inFile>>x;
+        if(x=='\n'||x==' ') break;
+        _B=x-'0';
+        B=B*10+_B;
+    }
+    if(x==' '){
+        do inFile>>x;
+        while(x!='\n');
+    }
+
+    cout<<"m="<<m<<",n="<<n<<",B="<<B<<endl;
+
+    Map=new bool* [m];
+    for(i=0;i<m;i++)
+        Map[i]=new bool[n];
+    dist=new int* [m];
+    for(i=0;i<m;i++)
+        dist[i]=new int[n];
+    visited=new bool* [m];
+    for(i=0;i<m;i++)
+        visited[i]=new bool[n];
+    for(i=0;i<m;i++)
+        for(j=0;j<n;j++){
+            dist[i][j]=-1;
+            visited[i][j]=0;
+        }
