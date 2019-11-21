@@ -244,3 +244,16 @@ int main()
 
     outFile.seekp(ios::beg);
     outFile<<total;
+///*
+    //check finish clean
+    for(i=0;i<m;i++)
+        for(j=0;j<n;j++){
+            if(!visited[i][j]){
+                cout<<"NOOOO"<<endl;
+                break;
+            }
+        }
+    cout<<"GREAT"<<endl;
+//*/
+    return 0;
+}
