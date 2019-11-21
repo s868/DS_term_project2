@@ -239,3 +239,8 @@ int main()
 
 
     }
+
+    cout<<"total "<<total<<endl;
+
+    outFile.seekp(ios::beg);
+    outFile<<total;
