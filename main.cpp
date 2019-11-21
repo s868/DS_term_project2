@@ -175,3 +175,31 @@ int main()
         return 1;
     }
     outFile<<"                    "<<endl;
+
+    ///construct Map[][]
+    for(i=0;i<m;i++){
+        for(j=0;j<=n;j++){
+            inFile>>x;
+            if((x=='\n'||x==' ')&& j!=n) inFile>>x; //濾掉不應出現的'\n' or ' '
+            if(j!=n){           //濾掉'\n'
+                if(x=='1')
+                    Map[i][j]=1;
+                else if(x=='0')
+                    Map[i][j]=0;
+                else if(x=='R'){
+                    Map[i][j]=1;
+                    R_row=i; R_col=j;
+                }
+
+                if(x=='1') visited[i][j]=true;
+            }
+            while(x==' '){      //濾掉後面出現的空格
+                inFile>>x;
+            }
+        }
+    }
+
+    ///order: 找路的順序；裡面順便算dist[][]
+    Stack order=calculateDist();
+    if(2*dist[order.getTop().x][order.getTop().y]>B) printf("ERROR!!!\n");
+    cout<<"at least "<<2*dist[order.getTop().x][order.getTop().y]<<endl;
