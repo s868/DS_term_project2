@@ -257,3 +257,37 @@ int main()
 //*/
     return 0;
 }
+
+Stack calculateDist(){
+    Stack s;
+    Queue que;
+    que.push(R_row,R_col);
+    dist[R_row][R_col]=0;
+    s.push(R_row,R_col);
+    while(!que.isEmpty()){
+        Pair p=que.getHead();
+        que.pop();
+        if (p.y + 1 < n && Map[p.x][p.y + 1] == 0 && dist[p.x][p.y + 1] == -1) {
+			dist[p.x][p.y + 1] = dist[p.x][p.y] + 1;
+			que.push(p.x, p.y + 1);
+			s.push(p.x, p.y + 1);
+		}
+		if (p.x + 1 < m && Map[p.x + 1][p.y] == 0 && dist[p.x + 1][p.y] == -1) {
+			dist[p.x + 1][p.y] = dist[p.x][p.y] + 1;
+			que.push(p.x + 1, p.y);
+			s.push(p.x + 1, p.y);
+		}
+		if (p.y - 1 >= 0 && Map[p.x][p.y - 1] == 0 && dist[p.x][p.y - 1] == -1) {
+			dist[p.x][p.y - 1] = dist[p.x][p.y] + 1;
+			que.push(p.x, p.y - 1);
+			s.push(p.x, p.y - 1);
+		}
+		if (p.x - 1 >= 0 && Map[p.x - 1][p.y] == 0 && dist[p.x - 1][p.y] == -1) {
+			dist[p.x - 1][p.y] = dist[p.x][p.y] + 1;
+			que.push(p.x - 1, p.y);
+			s.push(p.x - 1, p.y);
+		}
+    }
+
+    return s;
+}
