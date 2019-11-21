@@ -167,3 +167,11 @@ int main()
             dist[i][j]=-1;
             visited[i][j]=0;
         }
+
+    ///initialize final.path
+    ofstream outFile("final.path",ios::out);
+    if(!outFile){
+        cout<<"cannot open final.path"<<endl;
+        return 1;
+    }
+    outFile<<"                    "<<endl;
